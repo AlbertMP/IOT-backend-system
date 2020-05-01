@@ -82,7 +82,7 @@ public class MqttClientTest {
         MqttClientTest mqttClientTest = new MqttClientTest();
         mqttClientTest.connect();
         String topic = DEV_NO + Contants.MQTT_UP;
-        mqttClientTest.sub(topic);
+//        mqttClientTest.sub(topic);
         mqttClientTest.pub(topic, "测试信息");
     }
 
