@@ -28,6 +28,7 @@ public class MqttServiceImpl implements IMqttService, InitializingBean {
     @Autowired
     private DeviceDAO deviceDAO;
 
+    // 客户端实例
     private MqttClient mqttClient;
 
     @Override
