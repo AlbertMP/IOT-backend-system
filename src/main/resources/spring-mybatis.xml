@@ -20,6 +20,7 @@
             <list>
                 <value>classpath:jdbc.properties</value>
                 <value>classpath:mqtt.properties</value>
+                <value>classpath:mongo.properties</value>
             </list>
         </property>
     </bean>
@@ -54,5 +55,7 @@
         <property name="basePackage" value="com.cl.dao" />
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
+
+    <import resource="spring-mongo.xml"/>
 
 </beans>
