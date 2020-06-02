@@ -41,7 +41,7 @@
                         cc.push('<p><span class="c-label">' + copts.title + ':</span>' + val + '</p>');
                     }
                     var str = '<a href="#" name="open" class="easyui-linkbutton" onclick="obj.sendData(\'' + rowData.devNo + '\', 1)"></a>' +
-                        '<a href="#" name="close" class="easyui-linkbutton" onclick="obj.sendData(\'' + rowData.devNo + '\', 0)"></a>'
+                        '<a href="#" name="close" class="easyui-linkbutton" onclick="obj.sendData(\'' + rowData.devNo + '\', 0)"></a>';
                     cc.push('<p><span class="c-label">操作:</span> ' + str + '</p>');
                     cc.push('</div>');
                     cc.push('</td>');
@@ -54,7 +54,6 @@
                 width: 1100,
                 title: '设备在线管理',
                 method: 'get',
-                toolbar: '#tb',
                 singleSelect: 'true',
                 columns: [[
                     {field: 'id', title: 'id', width: 150},
