@@ -33,6 +33,9 @@ public class MqttServiceImpl implements IMqttService, InitializingBean {
     // 客户端实例
     private MqttClient mqttClient;
 
+    @Autowired
+    private MqttCallback mqttCallback;
+
     @Override
     public void init() throws MqttException {
         connect();
@@ -84,23 +87,7 @@ public class MqttServiceImpl implements IMqttService, InitializingBean {
 //         */
 //        options.setWill("close", "offline".getBytes(), 0, true);
         // 设置回调函数
-        mqttClient.setCallback(new MqttCallback() {
-            @Override
-            public void connectionLost(Throwable cause) {
-                System.out.println("连接断开，可以做重连");
-            }
-
-            @Override
-            public void messageArrived(String topic, MqttMessage message) throws Exception {
-                System.out.println("收到消息主题：" + topic);
-                System.out.println("收到消息内容：" + message);
-            }
-
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken token) {
-                System.out.println("发布完成");
-            }
-        });
+        mqttClient.setCallback(mqttCallback);
 
         mqttClient.connect(options);
         System.out.println("连接成功");

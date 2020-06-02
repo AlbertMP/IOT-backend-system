@@ -39,4 +39,9 @@ public class HelloController {
     public String loginIndex(){
         return "login"; // 映射到login.jsp
     }
+
+    @RequestMapping("/devicedatalist")
+    public String deviceDataList(){
+        return "devicedatalist";
+    }
 }

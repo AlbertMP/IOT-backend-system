@@ -8,9 +8,15 @@ public class DeviceDO {
 
     private Long id;
 
+    private Integer devType;
+
     private String devNo;
 
     private String devName;
+
+    private String devImg;
+
+    private Integer devStatus;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date dateCreate;
@@ -56,5 +62,29 @@ public class DeviceDO {
 
     public void setDateUpdate(Date dateUpdate) {
         this.dateUpdate = dateUpdate;
+    }
+
+    public Integer getDevType() {
+        return devType;
+    }
+
+    public void setDevType(Integer devType) {
+        this.devType = devType;
+    }
+
+    public String getDevImg() {
+        return devImg;
+    }
+
+    public void setDevImg(String devImg) {
+        this.devImg = devImg;
+    }
+
+    public Integer getDevStatus() {
+        return devStatus;
+    }
+
+    public void setDevStatus(Integer devStatus) {
+        this.devStatus = devStatus;
     }
 }

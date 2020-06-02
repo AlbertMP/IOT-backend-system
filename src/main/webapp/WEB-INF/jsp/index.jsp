@@ -28,6 +28,9 @@
             text: '终端管理',
             iconCls: 'fa fa-at',
             children: [{
+                text: '在线设备管理',
+                url: '../mvc/devicedatalist'
+            },{
                 text: '设备管理',
                 url: '../mvc/devicelist'
             }]

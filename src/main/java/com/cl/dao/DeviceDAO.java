@@ -20,4 +20,6 @@ public interface DeviceDAO {
     int countList(Map<String, Object> map);
 
     List<DeviceDO> pagingQuery(Long page);
+
+    DeviceDO selectByDevNo(String devNo);
 }

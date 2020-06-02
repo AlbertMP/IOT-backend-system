@@ -45,90 +45,102 @@
                     $("a[name='delete']").linkbutton({text:'删除', plain:true, iconCls:'icon-add'});
                 }
             });
-        });
-
-        obj = {
-            search: function () {
-                $('#tb1').datagrid('load', {
-                    devNo: $('#searchDevNo').val()
-                });
-            },
-            add: function () {
-                $('#fm').form('clear');
-                $('#dlg').dialog('open').dialog('center').dialog('setTitle', '添加设备');
-            },
-            close: function () {
-                $('#dlg').dialog('close');
-            },
-            update:function (index) {
-                if (index != null){
-                    $('#tb1').datagrid('selectRow', index);
-                }
-                var row = $('#tb1').datagrid('getSelected');
-                if (row){
-                    $('#dlg').dialog('open').dialog('center').dialog('setTitle', '修改设备');
-                    $('#fm').form('load', {
-                        id:row.id,
-                        devNo:row.devNo,
-                        devName:row.devName
+            obj = {
+                search: function () {
+                    $('#tb1').datagrid('load', {
+                        devNo: $('#searchDevNo').val()
                     });
-                }
-            },
-            delete:function (index) {
-                if (index!=null){
-                    $('#tb1').datagrid('selectRow',index);
-                }
-                var row =$('#tb1').datagrid('getSelected');
-                if (row){
-                    $.messager.confirm('Confirm','确定删除设备吗？',function (r) {
-                        if (r){
-                            $.post(baseUrl+'device/delete',{id:row.id},function (result) {
-                                if (result!=null && result.success){
-                                    $.messager.alert("提示","删除成功","info");
+                },
+                add: function () {
+                    $('#fm').form('clear');
+                    $('#dlg').dialog('open').dialog('center').dialog('setTitle', '添加设备');
+                },
+                close: function () {
+                    $('#dlg').dialog('close');
+                },
+                update:function (index) {
+                    if (index != null){
+                        $('#tb1').datagrid('selectRow', index);
+                    }
+                    var row = $('#tb1').datagrid('getSelected');
+                    if (row){
+                        $('#dlg').dialog('open').dialog('center').dialog('setTitle', '修改设备');
+                        $('#fm').form('load', {
+                            id:row.id,
+                            devType:row.devType,
+                            devNo:row.devNo,
+                            devName:row.devName
+                        });
+                    }
+                },
+                delete:function (index) {
+                    if (index!=null){
+                        $('#tb1').datagrid('selectRow',index);
+                    }
+                    var row =$('#tb1').datagrid('getSelected');
+                    if (row){
+                        $.messager.confirm('Confirm','确定删除设备吗？',function (r) {
+                            if (r){
+                                $.post(baseUrl+'device/delete',{id:row.id},function (result) {
+                                    if (result!=null && result.success){
+                                        $.messager.alert("提示","删除成功","info");
+                                        $('#tb1').datagrid('reload');
+                                    }else {
+                                        $.messager.alert("提示","删除失败","info");
+                                    }
+                                })
+                            }
+                        });
+                    }
+                },
+                save: function () {
+                    var id = document.getElementById("id").value;
+                    var devNo = document.getElementById("devNo").value;
+                    var devName = document.getElementById("devName").value;
+                    var url = "";
+                    if (id){
+                        url = baseUrl + "device/update";
+                    }else {
+                        url = baseUrl + "device/insert";
+                    }
+                    $('#fm').form('submit', {
+                        url: url,
+                        onSubmit: function () {
+                            return $(this).form('validate');
+                        },
+                        success: function (result) {
+                            var res = $.parseJSON(result);
+                            if (res != null && res.success) {
+                                if (id) {
+                                    obj.close();
+                                    $.messager.alert("提示", "更新成功", "info");
                                     $('#tb1').datagrid('reload');
                                 }else {
-                                    $.messager.alert("提示","删除失败","info");
+                                    obj.close();
+                                    $.messager.alert("提示", "添加成功", "info");
+                                    $('#tb1').datagrid('reload');
                                 }
-                            })
+                            }else {
+                                $.messager.alert("提示", "失败", "info");
+                            }
+                            $('#fm').form('clear');
                         }
                     });
-                }
-            },
-            save: function () {
-                var id = document.getElementById("id").value;
-                var devNo = document.getElementById("devNo").value;
-                var devName = document.getElementById("devName").value;
-                var url = "";
-                if (id){
-                    url = baseUrl + "device/update";
-                }else {
-                    url = baseUrl + "device/insert";
-                }
-                $('#fm').form('submit', {
-                    url: url,
-                    onSubmit: function () {
-                        return $(this).form('validate');
-                    },
-                    success: function (result) {
-                        var res = $.parseJSON(result);
-                        if (res != null && res.success) {
-                            if (id) {
-                                obj.close();
-                                $.messager.alert("提示", "更新成功", "info");
-                                $('#tb1').datagrid('reload');
-                            }else {
-                                obj.close();
-                                $.messager.alert("提示", "添加成功", "info");
-                                $('#tb1').datagrid('reload');
-                            }
-                        }else {
-                            $.messager.alert("提示", "失败", "info");
-                        }
-                        $('#fm').form('clear');
-                    }
-                });
-            },
-        }
+                },
+
+            }
+            var data = [
+                {'text': '智能电灯', 'value': 1},
+                {'text': '智能空调', 'value': 2}
+            ];
+
+            $('#devType').combobox({
+                textField: 'text',
+                valueField: 'value',
+                panelHeight: 'auto',
+                data: data
+            });
+        });
 
     </script>
 </head>
@@ -150,6 +162,10 @@
             <div class="fitem" style="margin-left: 10px;margin-top: 20px;">
                 <label>id:</label>
                 <input name="id" id="id" class="easyui-textbox"/>
+            </div>
+            <div class="fitem" style="margin-left: 10px;margin-top: 20px;">
+                <label>设备类型：</label>
+                <input name="devType" id="devType" required="true"/>
             </div>
             <div class="fitem" style="margin-left: 10px;margin-top: 20px;">
                 <label>设备编号：</label>
