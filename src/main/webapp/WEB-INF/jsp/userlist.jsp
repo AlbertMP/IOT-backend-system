@@ -46,92 +46,105 @@
                     $("a[name='delete']").linkbutton({text:'删除', plain:true, iconCls:'icon-add'});
                 }
             });
-        });
-
-        obj = {
-            search: function () {
-                $('#tb1').datagrid('load', {
-                    userNo: $('#searchUserNo').val()
-                });
-            },
-            add: function () {
-                $('#fm').form('clear');
-                $('#dlg').dialog('open').dialog('center').dialog('setTitle', '添加用户');
-            },
-            close: function () {
-                $('#dlg').dialog('close');
-            },
-            update:function (index) {
-                if (index != null){
-                    $('#tb1').datagrid('selectRow', index);
-                }
-                var row = $('#tb1').datagrid('getSelected');
-                if (row){
-                    $('#dlg').dialog('open').dialog('center').dialog('setTitle', '修改用户');
-                    $('#fm').form('load', {
-                        id:row.id,
-                        userNo:row.userNo,
-                        userName:row.userName,
-                        userPwd:row.userPwd
+            obj = {
+                search: function () {
+                    $('#tb1').datagrid('load', {
+                        userNo: $('#searchUserNo').val()
                     });
-                }
-            },
-            delete:function (index) {
-                if (index!=null){
-                    $('#tb1').datagrid('selectRow',index);
-                }
-                var row =$('#tb1').datagrid('getSelected');
-                if (row){
-                    $.messager.confirm('Confirm','确定删除用户吗？',function (r) {
-                        if (r){
-                            $.post(baseUrl+'user/delete',{id:row.id},function (result) {
-                                if (result!=null && result.success){
-                                    $.messager.alert("提示","删除成功","info");
+                },
+                add: function () {
+                    $('#fm').form('clear');
+                    $('#dlg').dialog('open').dialog('center').dialog('setTitle', '添加用户');
+                },
+                close: function () {
+                    $('#dlg').dialog('close');
+                },
+                update:function (index) {
+                    if (index != null){
+                        $('#tb1').datagrid('selectRow', index);
+                    }
+                    var row = $('#tb1').datagrid('getSelected');
+                    if (row){
+                        $('#dlg').dialog('open').dialog('center').dialog('setTitle', '修改用户');
+                        $('#fm').form('load', {
+                            id:row.id,
+                            userNo:row.userNo,
+                            userName:row.userName,
+                            userPwd:row.userPwd,
+                            roleKey:row.roleKey
+                        });
+                    }
+                },
+                delete:function (index) {
+                    if (index!=null){
+                        $('#tb1').datagrid('selectRow',index);
+                    }
+                    var row =$('#tb1').datagrid('getSelected');
+                    if (row){
+                        $.messager.confirm('Confirm','确定删除用户吗？',function (r) {
+                            if (r){
+                                $.post(baseUrl+'user/delete',{id:row.id},function (result) {
+                                    if (result!=null && result.success){
+                                        $.messager.alert("提示","删除成功","info");
+                                        $('#tb1').datagrid('reload');
+                                    }else {
+                                        $.messager.alert("提示","删除失败","info");
+                                    }
+                                })
+                            }
+                        });
+                    }
+                },
+                save: function () {
+                    var id = document.getElementById("id").value;
+                    var userNo = document.getElementById("userNo").value;
+                    var userName = document.getElementById("userName").value;
+                    var userPwd = document.getElementById("userPwd").value;
+                    var url = "";
+                    if (id){
+                        url = baseUrl + "user/update";
+                    }else {
+                        url = baseUrl + "user/insert";
+                    }
+                    $('#fm').form('submit', {
+                        url: url,
+                        onSubmit: function () {
+                            return $(this).form('validate');
+                        },
+                        success: function (result) {
+                            var res = $.parseJSON(result);
+                            if (res != null && res.success) {
+                                if (id) {
+                                    obj.close();
+                                    $.messager.alert("提示", "更新成功", "info");
                                     $('#tb1').datagrid('reload');
                                 }else {
-                                    $.messager.alert("提示","删除失败","info");
+                                    obj.close();
+                                    $.messager.alert("提示", "添加成功", "info");
+                                    $('#tb1').datagrid('reload');
                                 }
-                            })
+                            }else {
+                                $.messager.alert("提示", "失败", "info");
+                            }
+                            $('#fm').form('clear');
                         }
                     });
                 }
-            },
-            save: function () {
-                var id = document.getElementById("id").value;
-                var userNo = document.getElementById("userNo").value;
-                var userName = document.getElementById("userName").value;
-                var userPwd = document.getElementById("userPwd").value;
-                var url = "";
-                if (id){
-                    url = baseUrl + "user/update";
-                }else {
-                    url = baseUrl + "user/insert";
-                }
-                $('#fm').form('submit', {
-                    url: url,
-                    onSubmit: function () {
-                        return $(this).form('validate');
-                    },
-                    success: function (result) {
-                        var res = $.parseJSON(result);
-                        if (res != null && res.success) {
-                            if (id) {
-                                obj.close();
-                                $.messager.alert("提示", "更新成功", "info");
-                                $('#tb1').datagrid('reload');
-                            }else {
-                                obj.close();
-                                $.messager.alert("提示", "添加成功", "info");
-                                $('#tb1').datagrid('reload');
-                            }
-                        }else {
-                            $.messager.alert("提示", "失败", "info");
-                        }
-                        $('#fm').form('clear');
-                    }
-                });
-            },
-        }
+            }
+            var data = [
+                {'text': '管理员', 'value': 'ADMIN'},
+                {'text': '普通用户', 'value': 'NORMAL'}
+            ];
+
+            $('#roleKey').combobox({
+                textField: 'text',
+                valueField: 'value',
+                panelHeight: 'auto',
+                data: data
+            });
+        });
+
+
 
     </script>
 </head>
@@ -157,6 +170,10 @@
         <div class="fitem" style="margin-left: 10px;margin-top: 20px;">
             <label>用户编号：</label>
             <input name="userNo" id="userNo" class="easyui-textbox" required="true"/>
+        </div>
+        <div class="fitem" style="margin-left: 10px;margin-top: 20px;">
+            <label>角色：</label>
+            <input name="roleKey" id="roleKey" required="true"/>
         </div>
         <div class="fitem" style="margin-left: 10px;margin-top: 20px;">
             <label>用户名称：</label>

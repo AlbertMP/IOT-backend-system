@@ -30,6 +30,7 @@
     </bean>
 
     <mvc:interceptors>
+
         <mvc:interceptor>
             <mvc:mapping path="/mvc/**"/>
             <mvc:mapping path="/device/**"/>
@@ -38,6 +39,13 @@
             <mvc:exclude-mapping path="/user/login"/>
             <bean class="com.cl.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
+
+        <mvc:interceptor>
+            <mvc:mapping path="/user/*"/>
+            <mvc:exclude-mapping path="/user/login"/>
+            <bean class="com.cl.interceptor.AuthInterceptor"/>
+        </mvc:interceptor>
+
     </mvc:interceptors>
 
 </beans>

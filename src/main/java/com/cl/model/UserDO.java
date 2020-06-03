@@ -24,6 +24,8 @@ public class UserDO {
 
     private String userEmail;
 
+    private String roleKey;
+
     private int userStatus;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -126,5 +128,13 @@ public class UserDO {
 
     public void setUserLoginTime(Date userLoginTime) {
         this.userLoginTime = userLoginTime;
+    }
+
+    public String getRoleKey() {
+        return roleKey;
+    }
+
+    public void setRoleKey(String roleKey) {
+        this.roleKey = roleKey;
     }
 }

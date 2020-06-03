@@ -1,10 +1,12 @@
 package com.cl.controller;
 
 
+import com.cl.annotations.Permissions;
 import com.cl.common.Contants;
 import com.cl.common.Page;
 import com.cl.common.Result;
 import com.cl.common.ResultSupport;
+import com.cl.enums.RoleEnum;
 import com.cl.model.UserDO;
 import com.cl.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +31,26 @@ public class UserController {
 
     @RequestMapping("/insert")
     @ResponseBody
-    public Result<Void> insert(String userNo, String userName, String userPwd) {
+    @Permissions(role = {RoleEnum.ADMIN})
+//    public Result<Void> insert(String userNo, String userName, String userPwd) {
+//        UserDO userDO = new UserDO();
+//        userDO.setUserNo(userNo);
+//        userDO.setUserName(userName);
+//        userDO.setUserPwd(userPwd);
+//        userService.insert(userDO);
+//        Result<Void> result = new ResultSupport<>(true);
+//
+//        return result;
+//    }
+    public Result<Void> insert(@RequestParam(value = "userNo", required = true) String userNo,
+                               @RequestParam(value = "userName", required = true) String userName,
+                               @RequestParam(value = "userPwd", required = false, defaultValue = "123456") String userPwd,
+                               @RequestParam(value = "roleKey", required = true) String roleKey) {
         UserDO userDO = new UserDO();
         userDO.setUserNo(userNo);
         userDO.setUserName(userName);
         userDO.setUserPwd(userPwd);
+        userDO.setRoleKey(roleKey);
         userService.insert(userDO);
         Result<Void> result = new ResultSupport<>(true);
 
@@ -50,6 +67,7 @@ public class UserController {
 
     @RequestMapping("/delete")
     @ResponseBody
+    @Permissions(role = {RoleEnum.ADMIN})
     public Result<Void> delete(Long id) {
         userService.deleteByPrimaryKey(id);
         Result<Void> result = new ResultSupport<>(true);
@@ -79,19 +97,36 @@ public class UserController {
 
     @RequestMapping("/update")
     @ResponseBody
-    public Result<Void> update(Long id, String userNo, String userName, String userPwd) {
-        UserDO userDO = new UserDO();
-        userDO.setId(id);
+    @Permissions(role = {RoleEnum.ADMIN})
+//    public Result<Void> update(Long id, String userNo, String userName, String userPwd) {
+//        UserDO userDO = new UserDO();
+//        userDO.setId(id);
+//        userDO.setUserNo(userNo);
+//        userDO.setUserName(userName);
+//        userDO.setUserPwd(userPwd);
+//        userService.updateByPrimaryKey(userDO);
+//        Result<Void> result = new ResultSupport<>(true);
+//        return result;
+//    }
+    public Result<Void> update(@RequestParam(value = "id", required = true) Long id,
+                               @RequestParam(value = "userNo", required = true) String userNo,
+                               @RequestParam(value = "userName", required = true) String userName,
+                               @RequestParam(value = "userPwd", required = true) String userPwd,
+                               @RequestParam(value = "roleKey", required = true) String roleKey) {
+        UserDO userDO = userService.selectByPrimaryKey(id);
         userDO.setUserNo(userNo);
         userDO.setUserName(userName);
         userDO.setUserPwd(userPwd);
+        userDO.setRoleKey(roleKey);
         userService.updateByPrimaryKey(userDO);
         Result<Void> result = new ResultSupport<>(true);
+
         return result;
     }
 
     @RequestMapping("/pageUser")
     @ResponseBody
+    @Permissions(role = {RoleEnum.ADMIN, RoleEnum.NORMAL})
     public Map<String, Object> pageUser(@RequestParam(value = "userNo", required = false) String userNo,
                                           @RequestParam(value = "page", required = false, defaultValue = "1") int curPage,
                                           @RequestParam(value = "rows", required = false, defaultValue = "10") int pageSize){
@@ -104,6 +139,7 @@ public class UserController {
 
     @RequestMapping("/login")
     @ResponseBody
+    @Permissions(role = {RoleEnum.ADMIN, RoleEnum.NORMAL})
     public Result<Void> login(@RequestParam(value = "userName", required = true) String userName,
                               @RequestParam(value = "userPwd", required = true) String userPwd,
                               HttpServletRequest request){  // 加入request用于取出Session
@@ -123,6 +159,7 @@ public class UserController {
 
     @RequestMapping("/logout")
     @ResponseBody
+    @Permissions(role = {RoleEnum.ADMIN, RoleEnum.NORMAL})
     public void logout(HttpServletRequest request, HttpServletResponse response){
         HttpSession session = request.getSession();
         session.invalidate();
