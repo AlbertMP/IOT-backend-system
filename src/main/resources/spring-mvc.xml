@@ -36,13 +36,16 @@
             <mvc:mapping path="/device/**"/>
             <mvc:mapping path="/user/*"/>
             <mvc:exclude-mapping path="/mvc/loginIndex"/>
+            <mvc:exclude-mapping path="/mvc/register"/>
             <mvc:exclude-mapping path="/user/login"/>
+            <mvc:exclude-mapping path="/user/register"/>
             <bean class="com.cl.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
 
         <mvc:interceptor>
             <mvc:mapping path="/user/*"/>
             <mvc:exclude-mapping path="/user/login"/>
+            <mvc:exclude-mapping path="/user/register"/>
             <bean class="com.cl.interceptor.AuthInterceptor"/>
         </mvc:interceptor>
 

@@ -153,6 +153,8 @@
 <table id="tb1">
 
 </table>
+
+
 <div id="tb" style="padding: 2px 5px;">
     <div style="margin-bottom: 5px">
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="obj.add()">添加</a>
@@ -161,7 +163,7 @@
     <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="obj.search()">Search</a>
 </div>
 
-<div id="dlg" class="easyui-dialog" style="width: 500px; height: 300px;" closed="true" buttons="#dlg-buttons">
+<div id="dlg" class="easyui-dialog" style="width: 500px; height: 500px;" closed="true" buttons="#dlg-buttons">
     <form id="fm" method="post" novalidate>
         <div class="fitem" style="margin-left: 10px;margin-top: 20px;">
             <label>id:</label>

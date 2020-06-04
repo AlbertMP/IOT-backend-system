@@ -10,7 +10,6 @@ import com.cl.enums.RoleEnum;
 import com.cl.model.UserDO;
 import com.cl.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +45,23 @@ public class UserController {
                                @RequestParam(value = "userName", required = true) String userName,
                                @RequestParam(value = "userPwd", required = false, defaultValue = "123456") String userPwd,
                                @RequestParam(value = "roleKey", required = true) String roleKey) {
+        UserDO userDO = new UserDO();
+        userDO.setUserNo(userNo);
+        userDO.setUserName(userName);
+        userDO.setUserPwd(userPwd);
+        userDO.setRoleKey(roleKey);
+        userService.insert(userDO);
+        Result<Void> result = new ResultSupport<>(true);
+
+        return result;
+    }
+
+    @RequestMapping("/register")
+    @ResponseBody
+    public Result<Void> register(@RequestParam(value = "regUserNo", required = true) String userNo,
+                               @RequestParam(value = "regUserName", required = true) String userName,
+                               @RequestParam(value = "regUserPwd", required = false, defaultValue = "123456") String userPwd,
+                               @RequestParam(value = "regRoleKey", required = true) String roleKey) {
         UserDO userDO = new UserDO();
         userDO.setUserNo(userNo);
         userDO.setUserName(userName);
