@@ -1,6 +1,5 @@
 package com.cl.controller;
 
-
 import com.cl.annotations.Permissions;
 import com.cl.common.Contants;
 import com.cl.common.Page;
@@ -31,16 +30,6 @@ public class UserController {
     @RequestMapping("/insert")
     @ResponseBody
     @Permissions(role = {RoleEnum.ADMIN})
-//    public Result<Void> insert(String userNo, String userName, String userPwd) {
-//        UserDO userDO = new UserDO();
-//        userDO.setUserNo(userNo);
-//        userDO.setUserName(userName);
-//        userDO.setUserPwd(userPwd);
-//        userService.insert(userDO);
-//        Result<Void> result = new ResultSupport<>(true);
-//
-//        return result;
-//    }
     public Result<Void> insert(@RequestParam(value = "userNo", required = true) String userNo,
                                @RequestParam(value = "userName", required = true) String userName,
                                @RequestParam(value = "userPwd", required = false, defaultValue = "123456") String userPwd,
@@ -73,14 +62,6 @@ public class UserController {
         return result;
     }
 
-//    @RequestMapping("/delete/{id}")
-//    @ResponseBody
-//    public Result<Void> delete(@PathVariable("id") Long id) {
-//        userService.deleteByPrimaryKey(id);
-//        Result<Void> result = new ResultSupport<>(true);
-//        return result;
-//    }
-
     @RequestMapping("/delete")
     @ResponseBody
     @Permissions(role = {RoleEnum.ADMIN})
@@ -92,6 +73,7 @@ public class UserController {
 
     @RequestMapping("/get/{id}")
     @ResponseBody
+    @Permissions(role = {RoleEnum.ADMIN})
     public Result<UserDO> get(@PathVariable("id") Long id) {
         UserDO userDO = userService.selectByPrimaryKey(id);
         Result<UserDO> result = new ResultSupport<>(true);
@@ -99,31 +81,9 @@ public class UserController {
         return result;
     }
 
-//    @RequestMapping("/update/{id}")
-//    @ResponseBody
-//    public Result<Void> update(@PathVariable("id") Long id, String userNo, String userName) {
-//        UserDO userDO = userService.selectByPrimaryKey(id);;
-//        userDO.setUserNo(userNo);
-//        userDO.setUserName(userName);
-//        userService.updateByPrimaryKey(userDO);
-//        Result<Void> result = new ResultSupport<>(true);
-//
-//        return result;
-//    }
-
     @RequestMapping("/update")
     @ResponseBody
     @Permissions(role = {RoleEnum.ADMIN})
-//    public Result<Void> update(Long id, String userNo, String userName, String userPwd) {
-//        UserDO userDO = new UserDO();
-//        userDO.setId(id);
-//        userDO.setUserNo(userNo);
-//        userDO.setUserName(userName);
-//        userDO.setUserPwd(userPwd);
-//        userService.updateByPrimaryKey(userDO);
-//        Result<Void> result = new ResultSupport<>(true);
-//        return result;
-//    }
     public Result<Void> update(@RequestParam(value = "id", required = true) Long id,
                                @RequestParam(value = "userNo", required = true) String userNo,
                                @RequestParam(value = "userName", required = true) String userName,
@@ -142,7 +102,7 @@ public class UserController {
 
     @RequestMapping("/pageUser")
     @ResponseBody
-    @Permissions(role = {RoleEnum.ADMIN, RoleEnum.NORMAL})
+    @Permissions(role = {RoleEnum.ADMIN})
     public Map<String, Object> pageUser(@RequestParam(value = "userNo", required = false) String userNo,
                                           @RequestParam(value = "page", required = false, defaultValue = "1") int curPage,
                                           @RequestParam(value = "rows", required = false, defaultValue = "10") int pageSize){

@@ -4,7 +4,8 @@
 
     <insert id="insert" parameterType="com.cl.model.UserDO">
         insert into user (user_no, user_name, user_pwd, role_key, user_reg_time, user_login_time)
-        values (#{userNo,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, #{roleKey,jdbcType=VARCHAR},
+        values (#{userNo,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},
+        #{userPwd,jdbcType=VARCHAR}, #{roleKey,jdbcType=VARCHAR},
         #{userRegTime,jdbcType=TIMESTAMP}, #{userLoginTime,jdbcType=TIMESTAMP})
     </insert>
 
