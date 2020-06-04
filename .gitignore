@@ -34,6 +34,5 @@ out
 gen
 
 build
-.DS_Store
 .gradle
 gradle
