@@ -52,15 +52,12 @@
                     $('#dlg1').dialog('open').dialog('center').dialog('setTitle', '登录');
                 },
                 save: function () {
-                    // var id = document.getElementById("id").value;
                     var userNo = document.getElementById("regUserNo").value;
                     var userName = document.getElementById("regUserName").value;
                     var userPwd = document.getElementById("regUserPwd").value;
                     var roleKey = document.getElementById("regRoleKey").value;
                     var url = "";
-
                     url = baseUrl + "user/register";
-                    // }
                     $('#fm').form('submit', {
                         url: url,
                         onSubmit: function () {
